@@ -1,1 +1,68 @@
 
+Proje Adı: Bakiye Hesaplayıcı
+
+Açıklama: Bu proje, kullanıcının gelir ve giderlerini girerek hesap bakiyesini otomatik olarak hesaplayan bir basit hesaplayıcı uygulaması olacaktır.
+
+balanceCalculator.html
+<template>
+    <div class="container">
+        <lightning-input
+            label="Gelir"
+            type="number"
+            value={income}
+            onchange={handleIncomeChange}>
+        </lightning-input>
+        <lightning-input
+            label="Giderler"
+            type="number"
+            value={expenses}
+            onchange={handleExpensesChange}>
+        </lightning-input>
+        <lightning-button
+            label="Hesapla"
+            onclick={handleCalculate}>
+        </lightning-button>
+        <p class="result">Bakiye: {balance}</p>
+    </div>
+</template>
+
+balanceCalculator.js
+import { LightningElement, track } from 'lwc';
+
+export default class BalanceCalculator extends LightningElement {
+    @track income = 0;
+    @track expenses = 0;
+    @track balance = 0;
+
+    handleIncomeChange(event) {
+        this.income = parseFloat(event.target.value);
+    }
+
+    handleExpensesChange(event) {
+        this.expenses = parseFloat(event.target.value);
+    }
+
+    handleCalculate() {
+        this.balance = this.income - this.expenses;
+    }
+}
+balanceCalculator.css
+import { LightningElement, track } from 'lwc';
+
+export default class BalanceCalculator extends LightningElement {
+    @track income = 0;
+    @track expenses = 0;
+    @track balance = 0;
+
+    handleIncomeChange(event) {
+        this.income = parseFloat(event.target.value);
+    }
+
+    handleExpensesChange(event) {
+        this.expenses = parseFloat(event.target.value);
+    }
+
+    handleCalculate() {
+        this.balance = this.income - this.expenses;
+    }
+}
