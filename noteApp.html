@@ -1,0 +1,21 @@
+<template>
+    <div class="container">
+        <lightning-input
+            label="Yeni Not Ekle"
+            type="text"
+            value={newNote}
+            onchange={handleNoteChange}>
+        </lightning-input>
+        <lightning-button
+            label="Not Ekle"
+            onclick={handleAddNote}>
+        </lightning-button>
+        <ul>
+            <template for:each={notes} for:item="note">
+                <li key={note}>{note}</li>
+            </template>
+        </ul>
+    </div>
+    
+
+</template>
