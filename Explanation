@@ -1,0 +1,35 @@
+Proje Adı: Basit Not Defteri Uygulaması
+
+Açıklama: Bu proje, kullanıcıların metin tabanlı notlar eklemesine ve görüntülemesine olanak tanıyan basit bir not defteri uygulaması olacak.
+
+Adımlar:
+
+Proje Yapılandırması:
+
+Salesforce Developer Hesabı oluşturun (eğer yoksa).
+Salesforce'a giriş yapın ve bir Lightning deneyimi açın.
+Proje Dosyalarını Oluşturma:
+
+Salesforce Studio'da bir "NoteApp" adında bir Lightning Web Component projesi oluşturun.
+Component Oluşturma:
+
+noteApp adında bir LWC oluşturun. Bu bileşen, notları listelemek ve yeni notlar eklemek için kullanılacak.
+Bileşen Tasarımı ve İşlevselliği:
+
+noteApp bileşeni içerisinde, bir metin giriş kutusu (input) ve bir "Not Ekle" düğmesi ekleyin.
+Giriş kutusuna girilen metin, düğmeye tıklanınca bir liste içerisinde görüntülenmelidir.
+Bileşen İçinde Javascript Kodları:
+
+noteApp bileşeni, giriş kutusuna girilen metinleri tutan bir dizi (array) içerebilir.
+"Not Ekle" düğmesine tıklandığında, metin dizisine yeni not ekleyen bir Javascript fonksiyonu yazın.
+Bileşen İçinde HTML ve CSS Kodları:
+
+Metin giriş kutusu ve "Not Ekle" düğmesi için HTML elemanlarını ekleyin.
+Metin listesini görüntülemek için bir döngü (for:each) kullanarak her bir notu listeleyin.
+Bileşeni Bir Sayfada Kullanma:
+
+Bir Lightning Sayfası oluşturun.
+Bu sayfada noteApp bileşenini sürükleyip bırakarak yerleştirin.
+Uygulamayı Test Etme:
+
+Lightning Sayfasını görüntüleyin ve metin giriş kutusuna notlar ekleyip "Not Ekle" düğmesine tıklayarak işlevselliği test edin.
