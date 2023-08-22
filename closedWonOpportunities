@@ -1,0 +1,43 @@
+<template>
+    <lightning-card title="Closed Won Opportunities">
+        <div class="slds-m-around_medium">
+            <template if:true={opportunities}>
+                <ul>
+                    <template for:each={opportunities} for:item="opp">
+                        <li key={opp.Id}>{opp.Name} - Close Date: {opp.CloseDate}</li>
+                    </template>
+                </ul>
+            </template>
+            <template if:false={opportunities}>
+                No Closed Won Opportunities Found
+            </template>
+        </div>
+    </lightning-card>
+</template>
+
+js.
+import { LightningElement, wire } from 'lwc';
+import getClosedWonOpportunities from '@salesforce/apex/ClosedWonOppController.getClosedWonOpportunities';
+
+export default class ClosedWonOpportunitiesList extends LightningElement {
+    opportunities;
+
+    @wire(getClosedWonOpportunities)
+    wiredOpportunities({ data, error }) {
+        if (data) {
+            this.opportunities = data;
+        } else if (error) {
+            console.error(error);
+        }
+    }
+}
+apex class
+
+public with sharing class ClosedWonOppController {
+    @AuraEnabled(cacheable=true)
+    public static List<Opportunity> getClosedWonOpportunities() {
+        return [SELECT Id, Name, StageName, CloseDate FROM Opportunity WHERE StageName = 'Closed Won'];
+    }
+}
+
+
