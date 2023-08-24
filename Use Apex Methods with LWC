@@ -1,0 +1,51 @@
+Call Apex Using @wire
+
+public with sharing class AccountController {
+    @AuraEnabled(cacheable=true)
+    public static List<Account> getAccounts() {
+        return [
+            SELECT Name, AnnualRevenue, Industry
+            FROM Account
+            WITH SECURITY_ENFORCED
+            ORDER BY Name
+        ];
+    }
+}
+accountList.js
+import { LightningElement, wire } from 'lwc';
+import NAME_FIELD from '@salesforce/schema/Account.Name';
+import REVENUE_FIELD from '@salesforce/schema/Account.AnnualRevenue';
+import INDUSTRY_FIELD from '@salesforce/schema/Account.Industry';
+import getAccounts from '@salesforce/apex/AccountController.getAccounts';
+const COLUMNS = [
+    { label: 'Account Name', fieldName: NAME_FIELD.fieldApiName, type: 'text' },
+    { label: 'Annual Revenue', fieldName: REVENUE_FIELD.fieldApiName, type: 'currency' },
+    { label: 'Industry', fieldName: INDUSTRY_FIELD.fieldApiName, type: 'text' }
+];
+export default class AccountList extends LightningElement {
+    columns = COLUMNS;
+    @wire(getAccounts)
+    accounts;
+}
+accountList.html
+<template>
+    <lightning-card>
+        <template if:true={accounts.data}>
+            <lightning-datatable
+                key-field="Id"
+                data={accounts.data}
+                columns={columns}
+            >
+           </lightning-datatable>
+        </template>
+    </lightning-card>
+</template>
+accountList.js-meta.xml
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>48.0</apiVersion>
+    <isExposed>true</isExposed>
+    <targets>
+        <target>lightning__AppPage</target>
+    </targets>
+</LightningComponentBundle>
