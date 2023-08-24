@@ -1,0 +1,50 @@
+public with sharing class ContactController {
+    @AuraEnabled(cacheable=true)
+    public static List<Contact> getContacts() {
+        return [
+            SELECT FirstName, LastName, Email
+            FROM Contact
+            WITH SECURITY_ENFORCED
+            ORDER BY FirstName
+        ];
+    }
+}
+contactList.html
+<template>
+    <lightning-card>
+        <template if:true={contacts.data}>
+            <lightning-datatable
+                key-field="Id"
+                data={contacts.data}
+                columns={columns} 
+                >
+           </lightning-datatable>
+        </template>
+    </lightning-card>
+</template>
+contactList.js
+import { LightningElement, wire } from 'lwc';
+import FİRSTNAME_FIELD from '@salesforce/schema/Contact.FirstName';
+import LASTNAME_FIELD from '@salesforce/schema/Contact.LastName';
+import EMAİL_FIELD from '@salesforce/schema/Contact.Email';
+import getContacts from '@salesforce/apex/ContactController.getContacts';
+const COLUMNS = [
+    { label: 'FirstName', fieldName: FİRSTNAME_FIELD.fieldApiName, type: 'text' },
+    { label: 'LastName', fieldName: LASTNAME_FIELD.fieldApiName, type: 'text' },
+    { label: 'Email', fieldName: EMAİL_FIELD.fieldApiName, type: 'email' }
+];
+export default class ContactList extends LightningElement {
+    columns = COLUMNS;
+    @wire(getContacts)
+    contacts;
+}
+contactList.js-meta.xml
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>58.0</apiVersion>
+    <isExposed>true</isExposed>
+    <targets>
+        <target>lightning__AppPage</target>
+    </targets>
+</LightningComponentBundle>
+
