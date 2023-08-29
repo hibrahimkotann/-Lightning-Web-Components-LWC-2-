@@ -1,0 +1,85 @@
+
+***Apex Class**
+public with sharing class ContactController {
+    @AuraEnabled(cacheable=true)
+    public static List<Contact> getContacts() {
+       /* return [
+            SELECT FirstName, LastName, Email
+            FROM Contact
+            WITH SECURITY_ENFORCED
+            ORDER BY FirstName
+        ];*/
+        throw new AuraHandledException('Forced error');
+    }
+}
+*** contactList.html ***
+
+<template>
+    <lightning-card>
+        <template if:true={contacts.data}>
+           <lightning-datatable 
+            key-field="Id"
+            data = {contacts.data} 
+            columns = {columns}
+            >
+            </lightning-datatable>
+        </template>
+        <template if:true={errors}>
+            <p>{errors}</p>
+        </template>
+    </lightning-card>
+
+</template>
+
+*** contactList.js ***
+import { LightningElement,wire  } from 'lwc';
+  import FIRST_NAME_FIELD from '@salesforce/schema/Contact.FirstName';
+  import LAST_NAME_FIELD from '@salesforce/schema/Contact.LastName';
+  import EMAIL_FIELD from '@salesforce/schema/Contact.Email';
+  import getContacts from '@salesforce/apex/ContactController.getContacts';
+  import { reduceErrors,} from 'c/ldsUtils';
+ 
+ const COLUMNS = [{
+         label: 'First Name',
+         fieldName: FIRST_NAME_FIELD.fieldApiName,
+         type: 'text'
+ 
+    },
+ 
+    { 
+        label: 'Last Name',
+         fieldName: LAST_NAME_FIELD.fieldApiName,
+         type: 'text'
+ 
+    },
+ 
+    {
+         label: 'Email',
+         fieldName: EMAIL_FIELD.fieldApiName,
+         type: 'email'
+ 
+    }
+ 
+ ];
+ 
+ export default class contactList extends LightningElement {
+     columns = COLUMNS;
+     @wire(getContacts)
+     contacts;
+     get errors() {
+         return (this.contacts.error) ? reduceErrors(this.contacts.error) : [];
+ 
+    }
+ 
+ }
+*** contactList.js-meta.xml ***
+
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>58.0</apiVersion>
+    <isExposed>true</isExposed>
+    <targets>
+        <target>lightning__AppPage</target>
+    </targets>
+</LightningComponentBundle>
+
